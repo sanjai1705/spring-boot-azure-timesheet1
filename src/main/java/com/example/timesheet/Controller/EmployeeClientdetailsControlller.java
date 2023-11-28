@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @CrossOrigin(origins="http://localhost:3000")
-@RestController
+@RestController("/Timesheet")
 
 public class EmployeeClientdetailsControlller {
     @Autowired
@@ -18,12 +18,12 @@ public class EmployeeClientdetailsControlller {
 
 
 
-    @GetMapping
+    @GetMapping("/EmployeeClientdetails")
     public List<EmployeeClientdetails> getAllEmployeeClientdetails() {
         return employeeClientdetailsService.getAllEmployeeClientdetails();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/EmployeeClientdetails/{id}")
     public ResponseEntity<EmployeeClientdetails> getEmployeeClientdetailsById(@PathVariable Integer id) {
         EmployeeClientdetails employeeClientdetails = employeeClientdetailsService.getEmployeeClientdetailsById(id);
         if (employeeClientdetails != null) {
@@ -33,13 +33,13 @@ public class EmployeeClientdetailsControlller {
         }
     }
 
-    @PostMapping
+    @PostMapping("/EmployeeClientdetails/Create")
     public ResponseEntity<EmployeeClientdetails> createEmployeeClientdetails(@RequestBody EmployeeClientdetails employeeClientdetails) {
         EmployeeClientdetails createdEmployeeClientdetails = employeeClientdetailsService.createEmployeeClientdetails(employeeClientdetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEmployeeClientdetails);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/EmployeeClientdetails/Update/{id}")
     public ResponseEntity<EmployeeClientdetails> updateEmployeeClientdetails(@PathVariable Integer id, @RequestBody EmployeeClientdetails updatedEmployeeClientdetails) {
         EmployeeClientdetails employeeClientdetails = employeeClientdetailsService.updateEmployeeClientdetails(id, updatedEmployeeClientdetails);
         if (employeeClientdetails != null) {
@@ -49,7 +49,7 @@ public class EmployeeClientdetailsControlller {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/EmployeeClientdetails/Delete/{id}")
     public ResponseEntity<Void> deleteEmployeeClientdetails(@PathVariable Integer id) {
         employeeClientdetailsService.deleteEmployeeClientdetails(id);
         return ResponseEntity.noContent().build();
