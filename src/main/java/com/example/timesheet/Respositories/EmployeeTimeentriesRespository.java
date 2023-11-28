@@ -24,6 +24,7 @@ public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTi
     List<EmployeeTimeentries> findByUserAndDate(Users user, Date date);
 
 
+
    // EmployeeTimeentries findByUserAnddate(Users user, Date date);
 
     List<EmployeeTimeentries> findByUserAndStatusIsNull(Users user);

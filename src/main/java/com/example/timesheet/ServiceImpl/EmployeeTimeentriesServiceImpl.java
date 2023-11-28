@@ -1,10 +1,7 @@
 package com.example.timesheet.ServiceImpl;
 
 import com.example.timesheet.Entity.*;
-import com.example.timesheet.Respositories.DaywiseTimesheetRespository;
-import com.example.timesheet.Respositories.EmployeeTimeentriesRespository;
-import com.example.timesheet.Respositories.StatusDetailRespository;
-import com.example.timesheet.Respositories.YearlytableRespository;
+import com.example.timesheet.Respositories.*;
 import com.example.timesheet.Service.DaywiseTimesheetService;
 import com.example.timesheet.Service.EmployeeTimeentriesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +25,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
    @Autowired
     DaywiseTimesheetRespository daywiseTimesheetRespository;
    @Autowired
-    StatusDetailRespository statusDetailRespository;
+    StatusDetail1Respository statusDetail1Respository;
    @Autowired
     YearlytableRespository yearlytableRespository;
 
@@ -69,19 +66,14 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
             DaywiseTimesheet timesheet =  daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
             if (timesheet != null && !"Submitted".equals(timesheet.getStatus()) && !"Approved".equals(timesheet.getStatus())) {
 
-                StatusDetail statusdetail = statusDetailRespository.findStatusDetailByUserAndDate(employeeTimeentries.getUser(),employeeTimeentries.getDate());
-                statusdetail.setSaveTimestamp(Timestamp.valueOf(LocalDateTime.now()));
+
 
 
                 return employeeTimeentriesRespository.save(employeeTimeentries);
             } else if (timesheet==null) {
-                StatusDetail statusdetail = new StatusDetail();
-                statusdetail.setUser(employeeTimeentries.getUser());
-                statusdetail.setDate(employeeTimeentries.getDate());
-                Timestamp currentTimestamp1 = Timestamp.valueOf(LocalDateTime.now());
-                statusdetail.setSaveTimestamp(currentTimestamp1);
 
-                statusDetailRespository.save(statusdetail);
+
+
 
 
                 return  employeeTimeentriesRespository.save(employeeTimeentries);
@@ -208,7 +200,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 if (daywiseTimesheet.getTotalWorkingHours() == 0) {
                     // Check if time entry is deletable
                     EmployeeTimeentries timeentry = employeeTimeentriesRespository.findById(timesheetId).orElse(null);
-                    List<StatusDetail> statusDetail = statusDetailRespository.findByUserAndDate(timeentry.getUser(), timeentry.getDate());
+                    List<StatusDetail1> statusDetail = statusDetail1Respository.findByUserAndDate(timeentry.getUser(), timeentry.getDate());
                     if (timeentry != null) {
                         DaywiseTimesheet timesheet = daywiseTimesheetRespository.findByUserAndDate(timeentry.getUser(), timeentry.getDate());
 
@@ -218,8 +210,8 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                             employeeTimeentriesRespository.delete(timeentry);
                             daywiseTimesheetRespository.delete(timesheet);
 
-                            for (StatusDetail detail : statusDetail) {
-                                statusDetailRespository.delete(detail);
+                            for (StatusDetail1 detail : statusDetail) {
+                                statusDetail1Respository.delete(detail);
                             }
 
 
@@ -323,8 +315,8 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
             DaywiseTimesheet timesheet = daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
 
             if (timesheet!= null && !"Submitted".equals(timesheet.getStatus()) && !"Approved".equals(timesheet.getStatus())) {
-                StatusDetail statusdetail = statusDetailRespository.findStatusDetailByUserAndDate(employeeTimeentries.getUser(),employeeTimeentries.getDate());
-                statusdetail.setSaveTimestamp(currenttimestamp);
+
+
 
 
 
@@ -332,13 +324,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
 
                 return employeeTimeentriesRespository.save(employeeTimeentries);
             } else if (timesheet==null) {
-                StatusDetail statusdetail = new StatusDetail();
-                statusdetail.setUser(employeeTimeentries.getUser());
-                statusdetail.setDate(employeeTimeentries.getDate());
-                Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
-                statusdetail.setSaveTimestamp(currentTimestamp);
 
-                statusDetailRespository.save(statusdetail);
 
 
 
@@ -382,13 +368,14 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                     timeentry.setTimestamp(currentTimestamp);
 
                 }
-                StatusDetail statusdetail = new StatusDetail();
-                statusdetail.setUser(employeeTimeentries.getUser());
-                statusdetail.setDate(employeeTimeentries.getDate());
+                StatusDetail1 statusDetail1 = new StatusDetail1();
+                statusDetail1.setUser(employeeTimeentries.getUser());
+                statusDetail1.setDate(employeeTimeentries.getDate());
                 Timestamp currentTimestamp1 = Timestamp.valueOf(LocalDateTime.now());
-                statusdetail.setSubmittedTimestamp(currentTimestamp1);
-                statusdetail.setSubmittedTimestamp(Timestamp.valueOf(LocalDateTime.now()));
-                statusDetailRespository.save(statusdetail);
+                statusDetail1.setStatus("Submitted");
+                statusDetail1.setTimestamp(currentTimestamp1);
+
+                statusDetail1Respository.save(statusDetail1);
                 daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
                 employeeTimeentriesRespository.save(employeeTimeentries); // Save the updated status in EmployeeTimeentries
 
