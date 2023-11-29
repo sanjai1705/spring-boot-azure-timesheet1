@@ -230,4 +230,21 @@ public class EmployeeTimeentriesController {
         return new ResponseEntity<>("Timesheets submitted successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/EmployeeTimeentries/approved")
+    public ResponseEntity<String> approveTimesheetInRange(
+            @RequestParam Integer userId,
+            @RequestParam Integer startId,
+            @RequestParam Integer endId) {
+
+        Users user = usersService.getUserById(userId);
+
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        employeeTimeentriesService.approveTimesheetInRange(user, startId, endId);
+
+        return new ResponseEntity<>("Timesheets approved successfully", HttpStatus.OK);
+    }
+
 }

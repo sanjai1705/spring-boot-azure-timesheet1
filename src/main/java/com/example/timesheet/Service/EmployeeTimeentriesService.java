@@ -50,6 +50,8 @@ public interface EmployeeTimeentriesService {
 
     void submitTimesheetInRange(Users user, Integer startid, Integer endid);
 
+    void approveTimesheetInRange(Users user, Integer startid, Integer endid);
+
 
     List<EmployeeTimeentries> findCustomDateByProjectEmployeeAndUserAndDateRange(
             ProjectEmployee projectEmployee, Users user, Date startDate, Date endDate
