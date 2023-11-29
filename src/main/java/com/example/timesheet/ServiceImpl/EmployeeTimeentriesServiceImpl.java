@@ -358,14 +358,13 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 employeeTimeentries.setTimestamp(currentTimestamp);
 
                 // Update the status in DaywiseTimesheet
-                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(user, employeeTimeentries.getDate());
-
+               /* List<DaywiseTimesheet> timeentriesToUpdate = daywiseTimesheetRespository.findByUserDate(user, employeeTimeentries.getDate());
 
                 for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
                     timeentry.setStatus("Submitted");
                     timeentry.setTimestamp(currentTimestamp);
+                }*/
 
-                }
                 StatusDetail1 statusDetail1 = new StatusDetail1();
                 statusDetail1.setUser(employeeTimeentries.getUser());
                 statusDetail1.setDate(employeeTimeentries.getDate());
@@ -374,7 +373,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 statusDetail1.setTimestamp(currentTimestamp1);
 
                 statusDetail1Respository.save(statusDetail1);
-                daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
+             //  daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
                 employeeTimeentriesRespository.save(employeeTimeentries); // Save the updated status in EmployeeTimeentries
 
             }
@@ -405,14 +404,12 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 employeeTimeentries.setTimestamp(currentTimestamp);
 
                 // Update the status in DaywiseTimesheet
-                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
-
+                /*List<DaywiseTimesheet> timeentriesToUpdate = daywiseTimesheetRespository.findByUserAndDateInBetween(employeeTimeentries.getUser(), employeeTimeentries.getDate());
 
                 for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
                     timeentry.setStatus("Approved");
                     timeentry.setTimestamp(currentTimestamp);
-
-                }
+                }*/
                 StatusDetail1 statusDetail1 = new StatusDetail1();
                 statusDetail1.setUser(employeeTimeentries.getUser());
                 statusDetail1.setDate(employeeTimeentries.getDate());
@@ -421,7 +418,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 statusDetail1.setTimestamp(currentTimestamp1);
 
                 statusDetail1Respository.save(statusDetail1);
-                daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
+                //daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
                 employeeTimeentriesRespository.save(employeeTimeentries); // Save the updated status in EmployeeTimeentries
 
             }
@@ -442,15 +439,12 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 employeeTimeentries.setTimestamp(currentTimestamp);
 
                 // Update the status in DaywiseTimesheet
-                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
-
+                /*List<DaywiseTimesheet> timeentriesToUpdate = daywiseTimesheetRespository.findByUserAndDateInBetween(employeeTimeentries.getUser(), employeeTimeentries.getDate());
 
                 for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
                     timeentry.setStatus("Rejected");
-                    timeentry.getDescription();
                     timeentry.setTimestamp(currentTimestamp);
-
-                }
+                }*/
                 StatusDetail1 statusDetail1 = new StatusDetail1();
                 statusDetail1.setUser(employeeTimeentries.getUser());
                 statusDetail1.setDate(employeeTimeentries.getDate());
@@ -459,7 +453,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 statusDetail1.setTimestamp(currentTimestamp1);
 
                 statusDetail1Respository.save(statusDetail1);
-                daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
+                //daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
                 employeeTimeentriesRespository.save(employeeTimeentries); // Save the updated status in EmployeeTimeentries
 
             }

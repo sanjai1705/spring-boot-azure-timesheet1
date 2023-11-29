@@ -22,6 +22,8 @@ public interface DaywiseTimesheetRespository extends JpaRepository<DaywiseTimesh
     DaywiseTimesheet findByUserAndDate(Users user, Date date);
 
 
+
+
     List<DaywiseTimesheet> findByUserAndDateBetween(Users user, Date startdate, Date enddate);
 
 
@@ -43,7 +45,6 @@ public interface DaywiseTimesheetRespository extends JpaRepository<DaywiseTimesh
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate
     );
-
 
 
 
