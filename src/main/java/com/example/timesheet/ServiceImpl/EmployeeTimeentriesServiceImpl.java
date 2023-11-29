@@ -382,6 +382,42 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
 
 }
 
+    @Override
+    public void submitTimesheet(Users user, Date startdate, Date enddate) {
+
+        List<EmployeeTimeentries> timesheetsInRange = employeeTimeentriesRespository.findByUserAndDateBetween(user, startdate, enddate);
+        for (EmployeeTimeentries timeentries : timesheetsInRange) {
+            if (!"Submitted".equals(timeentries.getStatus())) {
+                timeentries.setStatus("Submitted");
+                Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
+                timeentries.setTimestamp(currentTimestamp);
+                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(user, timeentries.getDate());
+
+                for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
+                    timeentry.setStatus("Submitted");
+                    timeentry.setTimestamp(currentTimestamp);
+
+
+
+
+                }
+                StatusDetail1 statusDetail1 = new StatusDetail1();
+                statusDetail1.setUser(timeentries.getUser());
+                statusDetail1.setDate(timeentries.getDate());
+                Timestamp currentTimestamp1 = Timestamp.valueOf(LocalDateTime.now());
+                statusDetail1.setStatus("Approved");
+                statusDetail1.setTimestamp(currentTimestamp1);
+
+
+
+
+                employeeTimeentriesRespository.save(timeentries); // Save the updated status in DaywiseTimesheet
+                daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in EmployeeTimeentries
+                employeeTimeentriesRespository.save(timeentries);// Save the updated status
+            }
+        }
+    }
+
 
 
     @Override

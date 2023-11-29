@@ -230,6 +230,22 @@ public class EmployeeTimeentriesController {
         return new ResponseEntity<>("Timesheets submitted successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/EmployeeTimeentries/submit1")
+    public ResponseEntity<String> submitTimesheet(@RequestParam Integer userId,
+                                                  @RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startdate,
+                                                  @RequestParam  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date enddate) {
+        Users user = usersService.getUserById(Math.toIntExact(userId));
+        System.out.println(user);
+        if (user == null) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        employeeTimeentriesService.submitTimesheet(user, startdate, enddate);
+        System.out.println(daywiseTimesheetService);
+        return ResponseEntity.ok("Timesheets submitted successfully");
+    }
+
     @PostMapping("/EmployeeTimeentries/approved")
     public ResponseEntity<String> approveTimesheetInRange(@RequestParam Integer timesheetId) {
         employeeTimeentriesService.approveTimesheetInRange(timesheetId);
