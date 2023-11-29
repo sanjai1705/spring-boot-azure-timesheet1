@@ -395,8 +395,8 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
     }
 
     @Override
-    public void approveTimesheetInRange(Users user, Integer startid, Integer endid) {
-        List<EmployeeTimeentries> timesheetsInRange1 = employeeTimeentriesRespository.findByUserAndTimesheetIdBetween(user,startid,endid);
+    public void approveTimesheetInRange(Integer timesheetId) {
+        List<EmployeeTimeentries> timesheetsInRange1 = employeeTimeentriesRespository.findByTimesheetId(timesheetId);
 
         for (EmployeeTimeentries employeeTimeentries : timesheetsInRange1) {
             if (!"Approved".equals(employeeTimeentries.getStatus())) {
@@ -407,11 +407,11 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 employeeTimeentries.setTimestamp(currentTimestamp);
 
                 // Update the status in DaywiseTimesheet
-                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(user, employeeTimeentries.getDate());
+                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
 
 
                 for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
-                    timeentry.setStatus("Submitted");
+                    timeentry.setStatus("Approved");
                     timeentry.setTimestamp(currentTimestamp);
 
                 }

@@ -31,6 +31,8 @@ public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTi
 
     List<EmployeeTimeentries> findByUserAndTimesheetIdBetween(Users user, Integer startid, Integer endid);
 
+    List<EmployeeTimeentries> findByTimesheetId(Integer timesheetId);
+
     //List<EmployeeTimeentries> findByProjectEmployee(ProjectEmployee projectEmployee, Users user, Date startdate, Date enddate);
 
 

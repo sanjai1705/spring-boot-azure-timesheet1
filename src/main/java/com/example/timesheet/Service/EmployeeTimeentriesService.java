@@ -50,7 +50,7 @@ public interface EmployeeTimeentriesService {
 
     void submitTimesheetInRange(Users user, Integer startid, Integer endid);
 
-    void approveTimesheetInRange(Users user, Integer startid, Integer endid);
+    void approveTimesheetInRange(Integer timesheetId);
 
 
     List<EmployeeTimeentries> findCustomDateByProjectEmployeeAndUserAndDateRange(

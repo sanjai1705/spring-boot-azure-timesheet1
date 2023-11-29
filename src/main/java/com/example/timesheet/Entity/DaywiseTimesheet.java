@@ -112,7 +112,7 @@ public class DaywiseTimesheet  {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public void setDescription(String description) {
