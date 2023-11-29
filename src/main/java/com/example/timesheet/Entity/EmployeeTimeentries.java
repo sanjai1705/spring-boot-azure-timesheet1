@@ -48,6 +48,9 @@ public class EmployeeTimeentries {
     @Column(name = "Timestamp")
     private Date timestamp;
 
+    @Column(name = "Rejection_Description")
+    private String rejectionDescription;
+
     public EmployeeTimeentries() {
     }
 
@@ -137,5 +140,13 @@ public class EmployeeTimeentries {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getRejectionDescription() {
+        return rejectionDescription;
+    }
+
+    public void setRejectionDescription(String rejectionDescription) {
+        this.rejectionDescription = rejectionDescription;
     }
 }

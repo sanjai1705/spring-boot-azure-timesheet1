@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -420,6 +418,44 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
                 statusDetail1.setDate(employeeTimeentries.getDate());
                 Timestamp currentTimestamp1 = Timestamp.valueOf(LocalDateTime.now());
                 statusDetail1.setStatus("Approved");
+                statusDetail1.setTimestamp(currentTimestamp1);
+
+                statusDetail1Respository.save(statusDetail1);
+                daywiseTimesheetRespository.saveAll(timeentriesToUpdate); // Save the updated status in DaywiseTimesheet
+                employeeTimeentriesRespository.save(employeeTimeentries); // Save the updated status in EmployeeTimeentries
+
+            }
+        }
+    }
+
+    @Override
+    public void rejectTimesheetInRange(Integer timesheetId) {
+        List<EmployeeTimeentries> timesheetsInRange1 = employeeTimeentriesRespository.findByTimesheetId(timesheetId);
+
+        for (EmployeeTimeentries employeeTimeentries : timesheetsInRange1) {
+            if (!"Rejected".equals(employeeTimeentries.getStatus())) {
+                employeeTimeentries.setStatus("Rejected");
+                employeeTimeentries.getRejectionDescription();
+
+                // Set the timestamp to the current time
+                Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
+                employeeTimeentries.setTimestamp(currentTimestamp);
+
+                // Update the status in DaywiseTimesheet
+                List<DaywiseTimesheet> timeentriesToUpdate = (List<DaywiseTimesheet>) daywiseTimesheetRespository.findByUserAndDate(employeeTimeentries.getUser(), employeeTimeentries.getDate());
+
+
+                for (DaywiseTimesheet timeentry : timeentriesToUpdate) {
+                    timeentry.setStatus("Rejected");
+                    timeentry.getDescription();
+                    timeentry.setTimestamp(currentTimestamp);
+
+                }
+                StatusDetail1 statusDetail1 = new StatusDetail1();
+                statusDetail1.setUser(employeeTimeentries.getUser());
+                statusDetail1.setDate(employeeTimeentries.getDate());
+                Timestamp currentTimestamp1 = Timestamp.valueOf(LocalDateTime.now());
+                statusDetail1.setStatus("Rejected");
                 statusDetail1.setTimestamp(currentTimestamp1);
 
                 statusDetail1Respository.save(statusDetail1);

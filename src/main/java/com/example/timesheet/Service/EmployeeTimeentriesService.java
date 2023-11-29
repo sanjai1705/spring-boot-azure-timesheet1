@@ -58,7 +58,7 @@ public interface EmployeeTimeentriesService {
     );
 
 
-
+    void rejectTimesheetInRange(Integer timesheetId);
 }
 
 

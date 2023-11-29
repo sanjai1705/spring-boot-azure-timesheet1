@@ -237,4 +237,11 @@ public class EmployeeTimeentriesController {
         return new ResponseEntity<>("Timesheets approved successfully", HttpStatus.OK);
     }
 
+    @PostMapping("/EmployeeTimeentries/rejected")
+    public ResponseEntity<String> rejectedTimesheetInRange(@RequestParam Integer timesheetId) {
+        employeeTimeentriesService.rejectTimesheetInRange(timesheetId);
+
+        return new ResponseEntity<>("Timesheets rejectedsuccessfully", HttpStatus.OK);
+    }
+
 }
