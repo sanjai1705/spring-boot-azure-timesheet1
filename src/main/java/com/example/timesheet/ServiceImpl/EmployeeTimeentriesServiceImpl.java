@@ -499,6 +499,12 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
     }
 
 
+    @Override
+    public List<EmployeeTimeentries> findByUserIdAndStatusIsSubmitted(Users userId) {
+
+        return employeeTimeentriesRespository.findByUserAndSubmit(userId);
+    }
+
 
 
 

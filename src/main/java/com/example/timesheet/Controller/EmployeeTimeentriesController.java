@@ -260,4 +260,9 @@ public class EmployeeTimeentriesController {
         return new ResponseEntity<>("Timesheets rejectedsuccessfully", HttpStatus.OK);
     }
 
+    @GetMapping("/EmployeeTimeentries/submitted/user/{userId}")
+    public List<EmployeeTimeentries> getDaywiseTimesheetByUser(@PathVariable Users userId) {
+        return employeeTimeentriesService.findByUserIdAndStatusIsSubmitted(userId);
+    }
+
 }

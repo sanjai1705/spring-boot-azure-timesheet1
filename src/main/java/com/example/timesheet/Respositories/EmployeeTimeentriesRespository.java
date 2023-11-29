@@ -53,6 +53,11 @@ public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTi
             @Param("endDate") Date endDate
     );
 
+    @Query("SELECT e FROM EmployeeTimeentries  e WHERE e.user =:userId AND e.status = 'Submitted'")
+    List<EmployeeTimeentries> findByUserAndSubmit(
+            @Param("userId") Users userId
+    );
+
 
 
 }

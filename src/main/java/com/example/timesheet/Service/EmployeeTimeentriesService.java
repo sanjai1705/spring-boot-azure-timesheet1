@@ -61,6 +61,8 @@ public interface EmployeeTimeentriesService {
 
 
     void rejectTimesheetInRange(Integer timesheetId);
+
+    List<EmployeeTimeentries> findByUserIdAndStatusIsSubmitted(Users userId);
 }
 
 
