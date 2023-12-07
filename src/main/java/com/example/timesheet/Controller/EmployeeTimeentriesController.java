@@ -257,7 +257,7 @@ public class EmployeeTimeentriesController {
     public ResponseEntity<String> rejectedTimesheetInRange(@RequestParam Integer timesheetId,@RequestParam String rejectionDescription) {
         employeeTimeentriesService.rejectTimesheetInRange(timesheetId,rejectionDescription);
 
-        return new ResponseEntity<>("Timesheets rejected  successfully", HttpStatus.OK);
+        return new ResponseEntity<>(" rejected  successfully", HttpStatus.OK);
     }
 
     @GetMapping("/EmployeeTimeentries/submitted/user/{userId}")
