@@ -254,8 +254,8 @@ public class EmployeeTimeentriesController {
     }
 
     @PostMapping("/EmployeeTimeentries/rejected")
-    public ResponseEntity<String> rejectedTimesheetInRange(@RequestParam Integer timesheetId) {
-        employeeTimeentriesService.rejectTimesheetInRange(timesheetId);
+    public ResponseEntity<String> rejectedTimesheetInRange(@RequestParam Integer timesheetId,@RequestParam String rejectionDescription) {
+        employeeTimeentriesService.rejectTimesheetInRange(timesheetId,rejectionDescription);
 
         return new ResponseEntity<>("Timesheets rejectedsuccessfully", HttpStatus.OK);
     }

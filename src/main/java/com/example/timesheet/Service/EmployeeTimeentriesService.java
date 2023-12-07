@@ -60,7 +60,7 @@ public interface EmployeeTimeentriesService {
     );
 
 
-    void rejectTimesheetInRange(Integer timesheetId);
+    void rejectTimesheetInRange(Integer timesheetId,String rejectionDescription);
 
     List<EmployeeTimeentries> findByUserIdAndStatusIsSubmitted(Users userId);
 }

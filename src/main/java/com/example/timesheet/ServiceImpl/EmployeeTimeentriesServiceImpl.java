@@ -464,13 +464,13 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
     }
 
     @Override
-    public void rejectTimesheetInRange(Integer timesheetId) {
+    public void rejectTimesheetInRange(Integer timesheetId,String rejectionDescription) {
         List<EmployeeTimeentries> timesheetsInRange1 = employeeTimeentriesRespository.findByTimesheetId(timesheetId);
 
         for (EmployeeTimeentries employeeTimeentries : timesheetsInRange1) {
             if (!"Rejected".equals(employeeTimeentries.getStatus())) {
                 employeeTimeentries.setStatus("Rejected");
-                employeeTimeentries.getRejectionDescription();
+                employeeTimeentries.setRejectionDescription(rejectionDescription);
 
                 // Set the timestamp to the current time
                 Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
