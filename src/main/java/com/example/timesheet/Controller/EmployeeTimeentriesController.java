@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="https://timesheet-react.azurewebsites.net")
 @RestController
 @RequestMapping("/Timesheet")
 public class EmployeeTimeentriesController {

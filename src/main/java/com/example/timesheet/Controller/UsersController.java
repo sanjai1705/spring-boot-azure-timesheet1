@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="https://timesheet-react.azurewebsites.net")
 @RequestMapping("/Timesheet")
 public class UsersController {
     @Autowired
