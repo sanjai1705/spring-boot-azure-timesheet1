@@ -470,7 +470,7 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
         for (EmployeeTimeentries employeeTimeentries : timesheetsInRange1) {
             if (!"Rejected".equals(employeeTimeentries.getStatus())) {
                 employeeTimeentries.setStatus("Rejected");
-                employeeTimeentries.setRejectionDescription(rejectionDescription);
+               employeeTimeentries.setRejectionDescription(rejectionDescription);
 
                 // Set the timestamp to the current time
                 Timestamp currentTimestamp = Timestamp.valueOf(LocalDateTime.now());
