@@ -143,6 +143,7 @@ public class EmployeeTimeentries {
     }
 
     public String getRejectionDescription() {
+
         return rejectionDescription;
     }
 
