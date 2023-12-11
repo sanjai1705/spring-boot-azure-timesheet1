@@ -29,6 +29,13 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users createUser(Users user) {
+        if (usersRespository.existsByUsername(user.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        if (usersRespository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
         return usersRespository.save(user);
     }
 
@@ -57,6 +64,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public List<Users> getUsersByRoleId(Integer roleId) {
+
         return usersRespository.findByRoleRoleID(roleId);
     }
 
