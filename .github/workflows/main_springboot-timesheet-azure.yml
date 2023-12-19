@@ -26,31 +26,18 @@ jobs:
       - name: Build with Maven
         run: mvn clean install
 
-      - name: Upload New Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: java-app
-          path: "${{ github.workspace }}/target/*.jar"
-
   deploy:
     runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
-      url: ${{ needs.build.outputs.webapp-url }}
+      url: ${{ secrets.AZURE_WEB_APP_URL }}  # Replace with your actual Azure Web App URL
 
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v2
-        with:
-          name: java-app
-          path: "${{ github.workspace }}/java-app"
-
       - name: Deploy to Azure Web App
-        id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'springboot-timesheet-azure'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3671D252CFE04F1F8427DDFF1778737F }}
-          package: "${{ github.workspace }}/java-app/*.jar"
+          package: "${{ github.workspace }}/target/*.jar"
