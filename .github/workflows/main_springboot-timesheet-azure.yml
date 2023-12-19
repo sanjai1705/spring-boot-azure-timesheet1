@@ -43,17 +43,16 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download Artifact from Build Job
-        uses: actions/download-artifact@v3
-        with:
-          name: java-app
+     - name: Download artifact from build job
+       uses: actions/download-artifact@v3
+       with:
+        name: java-app  # Update this to match the artifact name
 
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'springboot-timesheet-azure'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3671D252CFE04F1F8427DDFF1778737F }}
-          package: '*.jar'
+     - name: Deploy to Azure Web App
+       id: deploy-to-webapp
+       uses: azure/webapps-deploy@v2
+       with:
+        app-name: 'springboot-timesheet-azure'
+        slot-name: 'Production'
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3671D252CFE04F1F8427DDFF1778737F }}
+        package: "${{ github.workspace }}/java-app/*.jar"  # Update this to the correct path
