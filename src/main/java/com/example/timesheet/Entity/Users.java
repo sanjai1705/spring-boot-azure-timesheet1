@@ -45,10 +45,12 @@ public class Users {
     @Column(name = "Passout_Year")
     private Integer passoutYear;
 
+
+    @Column(name = "Reset_Token")
+    private String resetToken;
+
     public Users() {
     }
-/* @Column(name = "Reset_Token")
-    private String resetToken;*/
 
     public Integer getUserId() {
         return userId;
@@ -136,5 +138,13 @@ public class Users {
 
     public void setPassoutYear(Integer passoutYear) {
         this.passoutYear = passoutYear;
+    }
+
+    public String getResetToken() {
+        return resetToken;
+    }
+
+    public void setResetToken(String resetToken) {
+        this.resetToken = resetToken;
     }
 }
