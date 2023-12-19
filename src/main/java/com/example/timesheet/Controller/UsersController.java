@@ -73,7 +73,7 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
-    @PostMapping("/forgot-password")
+    /*@PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestParam String email) {
         usersService.sendPasswordResetEmail(email);
         return ResponseEntity.ok("Password reset instructions sent to your email.");
@@ -83,7 +83,7 @@ public class UsersController {
     public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
         usersService.resetPassword(email, newPassword);
         return ResponseEntity.ok("Password reset successfully.");
-    }
+    }*/
 
 
     }
