@@ -26,15 +26,15 @@ jobs:
 
       - name: Delete Old Artifacts
         run: |
-         # Delete old artifacts before uploading new ones
-         rm -rf "${{ github.workspace }}/target/*.jar"
+          # Delete old artifacts before uploading new ones
+          Remove-Item -Path "${{ github.workspace }}/target/*.jar" -Force
+          # Note: On Windows, use Remove-Item instead of rm
 
       - name: Upload New Artifact
         uses: actions/upload-artifact@v3
         with:
           name: java-app
           path: "${{ github.workspace }}/target/*.jar"
-
   deploy:
     runs-on: windows-latest
     needs: build
