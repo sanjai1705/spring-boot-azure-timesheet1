@@ -73,6 +73,17 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
+        usersService.sendPasswordResetEmail(email);
+        return ResponseEntity.ok("Password reset instructions sent to your email.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
+        usersService.resetPassword(email, newPassword);
+        return ResponseEntity.ok("Password reset successfully.");
+    }
 
 
     }

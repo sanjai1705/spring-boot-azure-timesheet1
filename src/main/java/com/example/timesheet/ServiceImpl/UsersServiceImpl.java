@@ -3,11 +3,15 @@ package com.example.timesheet.ServiceImpl;
 import com.example.timesheet.Entity.Users;
 import com.example.timesheet.Respositories.UsersRespository;
 import com.example.timesheet.Service.UsersService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -67,6 +71,47 @@ public class UsersServiceImpl implements UsersService {
 
         return usersRespository.findByRoleRoleID(roleId);
     }
+
+
+
+    @Override
+    public void sendPasswordResetEmail(String email) {
+        // Implement logic to send an email with a password reset link
+        // You may generate a unique token, save it in the database, and include it in the email link
+        // Here, I'm just demonstrating the logic, not the actual email sending mechanism
+        Users user = usersRespository.findByEmail(email);
+        if (user != null) {
+            // Generate and send reset link with a unique token
+            String resetToken = generateUniqueToken();
+            user.setResetToken(resetToken);
+            usersRespository.save(user);
+            // Send email with the reset link using your email sending logic
+        }
+    }
+
+    @Override
+    public void resetPassword(String email, String newPassword) {
+        Users user = usersRespository.findByEmailAndResetToken(email, newPassword);
+        if (user != null) {
+            // Reset password and clear the reset token
+            user.setPassword(newPassword);
+            user.setResetToken(null);
+            usersRespository.save(user);
+        } else {
+            throw new RuntimeException("Invalid reset token or email");
+        }
+    }
+
+    private String generateUniqueToken() {
+        // Implement logic to generate a unique token (e.g., UUID)
+        return UUID.randomUUID().toString();
+    }
+
+
+
+
+
+
 
 
 
