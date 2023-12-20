@@ -101,8 +101,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void resetPassword(String email, String newPassword) {
         Users user = usersRespository.findByEmailAndResetToken(email, newPassword);
-       /* if (user != null && isTokenValid(user.getResetToken()))*/
-        if (user == null){
+        if (user != null && isTokenValid(user.getResetToken())){
             // Check if the token is still valid
             user.setPassword(newPassword);
             user.setResetToken(null);
