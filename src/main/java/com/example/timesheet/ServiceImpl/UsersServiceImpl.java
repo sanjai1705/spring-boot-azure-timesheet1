@@ -73,7 +73,7 @@ public class UsersServiceImpl implements UsersService {
     }
 
 
-
+    private static final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
    @Override
     public void sendPasswordResetEmail(String email) {
         // Implement logic to send an email with a password reset link
@@ -93,7 +93,7 @@ public class UsersServiceImpl implements UsersService {
     public void resetPassword(String email, String newPassword) {
         Users user = usersRespository.findByEmailAndResetToken(email, newPassword);
         if (user != null) {
-            // Reset password and clear the reset token
+            // Reset the password and clear the token
             user.setPassword(newPassword);
             user.setResetToken(null);
             usersRespository.save(user);
@@ -103,9 +103,17 @@ public class UsersServiceImpl implements UsersService {
     }
 
     private String generateUniqueToken() {
-        // Implement logic to generate a unique token (e.g., UUID)
-        return UUID.randomUUID().toString();
+        long expirationTime = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
+        return UUID.randomUUID().toString() + "|" + expirationTime;
     }
+    private long extractExpirationTimeFromToken(String token) {
+        String[] tokenParts = token.split("\\|");
+        if (tokenParts.length == 2 && tokenParts[1].matches("\\d+")) {
+            return Long.parseLong(tokenParts[1]);
+        }
+        return 0;
+    }
+
 
 
 
