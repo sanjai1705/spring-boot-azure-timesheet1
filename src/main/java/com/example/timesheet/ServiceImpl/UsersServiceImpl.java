@@ -6,6 +6,9 @@ import com.example.timesheet.Service.UsersService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -17,6 +20,12 @@ import java.util.UUID;
 public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRespository usersRespository;
+
+    @Autowired
+    private JavaMailSender javaMailSender; // Autowire JavaMailSender
+
+    @Value("${spring.mail.username}") // Assuming you have configured email properties in your application.properties
+    private String fromEmail;
 
 
 
@@ -79,6 +88,8 @@ public class UsersServiceImpl implements UsersService {
 
         Users user = usersRespository.findByEmail(email);
         if (user != null) {
+
+
             // Generate and send reset link with a unique token
             String resetToken = generateUniqueToken();
             user.setResetToken(resetToken);
@@ -90,8 +101,9 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public void resetPassword(String email, String newPassword) {
         Users user = usersRespository.findByEmailAndResetToken(email, newPassword);
-        if (user != null) {
-            // Reset the password and clear the token
+       /* if (user != null && isTokenValid(user.getResetToken()))*/
+        if (user == null){
+            // Check if the token is still valid
             user.setPassword(newPassword);
             user.setResetToken(null);
             usersRespository.save(user);
@@ -104,6 +116,31 @@ public class UsersServiceImpl implements UsersService {
         long expirationTime = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
         return UUID.randomUUID().toString() + "|" + expirationTime;
     }
+
+    private boolean isTokenValid(String token) {
+        // Extract expiration time from the token and check if it's still valid
+        String[] tokenParts = token.split("\\|");
+        if (tokenParts.length == 2) {
+            long expirationTime = Long.parseLong(tokenParts[1]);
+            return expirationTime >= System.currentTimeMillis();
+        }
+        return false;
+    }
+
+    private void sendResetEmail(String toEmail, String resetToken) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(fromEmail);
+        message.setTo(toEmail);
+        message.setSubject("Password Reset Request");
+        message.setText("Click the following link to reset your password: http://your-frontend-url/reset?token=" + resetToken);
+
+        // Send the email
+        javaMailSender.send(message);
+    }
+
+
+
+
 
 
 
