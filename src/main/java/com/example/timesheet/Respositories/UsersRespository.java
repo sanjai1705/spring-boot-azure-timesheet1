@@ -20,7 +20,7 @@ public interface UsersRespository extends JpaRepository<Users,Integer> {
     boolean existsByEmail(String email);
 
 
-   // Users findByEmail(String email);
+    Users findByEmail(String email);
 
-   // Users findByEmailAndResetToken(String email, String newpassword);
+    Users findByEmailAndResetToken(String email, String newpassword);
 }

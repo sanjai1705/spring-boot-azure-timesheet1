@@ -74,7 +74,7 @@ public class UsersServiceImpl implements UsersService {
 
 
 
-   /* @Override
+   @Override
     public void sendPasswordResetEmail(String email) {
         // Implement logic to send an email with a password reset link
         // You may generate a unique token, save it in the database, and include it in the email link
@@ -105,7 +105,7 @@ public class UsersServiceImpl implements UsersService {
     private String generateUniqueToken() {
         // Implement logic to generate a unique token (e.g., UUID)
         return UUID.randomUUID().toString();
-    }*/
+    }
 
 
 
