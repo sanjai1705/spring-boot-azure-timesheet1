@@ -76,16 +76,14 @@ public class UsersServiceImpl implements UsersService {
     private static final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
    @Override
     public void sendPasswordResetEmail(String email) {
-        // Implement logic to send an email with a password reset link
-        // You may generate a unique token, save it in the database, and include it in the email link
-        // Here, I'm just demonstrating the logic, not the actual email sending mechanism
+
         Users user = usersRespository.findByEmail(email);
         if (user != null) {
             // Generate and send reset link with a unique token
             String resetToken = generateUniqueToken();
             user.setResetToken(resetToken);
             usersRespository.save(user);
-            // Send email with the reset link using your email sending logic
+
         }
     }
 
@@ -106,13 +104,7 @@ public class UsersServiceImpl implements UsersService {
         long expirationTime = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
         return UUID.randomUUID().toString() + "|" + expirationTime;
     }
-    private long extractExpirationTimeFromToken(String token) {
-        String[] tokenParts = token.split("\\|");
-        if (tokenParts.length == 2 && tokenParts[1].matches("\\d+")) {
-            return Long.parseLong(tokenParts[1]);
-        }
-        return 0;
-    }
+
 
 
 
