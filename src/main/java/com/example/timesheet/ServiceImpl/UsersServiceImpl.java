@@ -134,14 +134,8 @@ public class UsersServiceImpl implements UsersService {
         message.setSubject("Password Reset Request");
         message.setText("Click the following link to reset your password: http://your-frontend-url/reset?token=" + resetToken);
 
-        try {
-            javaMailSender.send(message);
-        } catch (Exception e) {
-            // Log the exception
-            e.printStackTrace();
-            // You can also throw a custom exception or handle it as appropriate
-        }
-
+        // Send the email
+        javaMailSender.send(message);
     }
 
 }
