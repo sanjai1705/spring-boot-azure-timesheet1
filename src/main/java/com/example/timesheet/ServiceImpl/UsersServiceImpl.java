@@ -94,7 +94,7 @@ public class UsersServiceImpl implements UsersService {
             String resetToken = generateUniqueToken();
             user.setResetToken(resetToken);
             usersRespository.save(user);
-
+            sendResetEmail(email, user.getResetToken());
         }
     }
 
@@ -106,6 +106,7 @@ public class UsersServiceImpl implements UsersService {
             user.setPassword(newPassword);
             user.setResetToken(null);
             usersRespository.save(user);
+
         } else {
             throw new RuntimeException("Invalid reset token or email");
         }
@@ -136,20 +137,5 @@ public class UsersServiceImpl implements UsersService {
         // Send the email
         javaMailSender.send(message);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
