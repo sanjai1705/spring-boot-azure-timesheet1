@@ -87,7 +87,7 @@ public class UsersServiceImpl implements UsersService {
     public void sendPasswordResetEmail(String email) {
 
         Users user = usersRespository.findByEmail(email);
-        if (user != null) {
+        if (user == null) {
 
 
             // Generate and send reset link with a unique token
