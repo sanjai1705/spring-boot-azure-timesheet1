@@ -74,16 +74,30 @@ public class UsersController {
         }
     }
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestParam String email) {
-        usersService.sendPasswordResetEmail(email);
-        return ResponseEntity.ok("Password reset instructions sent to your email.");
+    public ResponseEntity<String> sendPasswordResetEmail(@RequestParam String email) {
+        boolean emailSent = usersService.sendPasswordResetEmail(email);
+
+        if (emailSent) {
+            return ResponseEntity.ok("Password reset email sent successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User with email " + email + " not found");
+        }
     }
+
 
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestParam String email, @RequestParam String newPassword) {
-        usersService.resetPassword(email, newPassword);
-        return ResponseEntity.ok("Password reset successfully.");
-    }
+    public ResponseEntity<String> resetPassword(
+            @RequestParam String resetToken,
+            @RequestParam String email,
+            @RequestParam String newPassword) {
 
+        boolean Successful = usersService.resetPassword(resetToken, email, newPassword);
+
+        if (Successful) {
+            return new ResponseEntity<>("Password reset successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Invalid reset token, email, or user not found", HttpStatus.BAD_REQUEST);
+        }
+    }
 
     }

@@ -6,8 +6,11 @@ import com.example.timesheet.Entity.EmployeeTimeentries;
 import com.example.timesheet.Entity.ProjectEmployee;
 import com.example.timesheet.Entity.Users;
 
+import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeTimeentriesService {
     List<EmployeeTimeentries> getAllEmployeeTimeentries();
@@ -55,14 +58,29 @@ public interface EmployeeTimeentriesService {
 
     void submitTimesheet(Users user, Date startdate, Date enddate);
 
-    List<EmployeeTimeentries> findCustomDateByProjectEmployeeAndUserAndDateRange(
-            ProjectEmployee projectEmployee, Users user, Date startDate, Date endDate
-    );
+
+    /*List<String> findCustomDateByProjectEmployeeAndUserAndDateRange(
+            ProjectEmployee projectEmployee,
+            Users user,
+            String startDate,
+            String endDate,
+            String status
+    ) ;*/
+
 
 
     void rejectTimesheetInRange(Integer timesheetId,String rejectionDescription);
 
     List<EmployeeTimeentries> findByUserIdAndStatusIsSubmitted(Users userId);
+
+
+
+
+    List<Object[]> getStatusMessageAndTimeEntries(
+            ProjectEmployee projectEmployee,
+            Users user,
+            Date startDate,
+            Date endDate);
 }
 
 

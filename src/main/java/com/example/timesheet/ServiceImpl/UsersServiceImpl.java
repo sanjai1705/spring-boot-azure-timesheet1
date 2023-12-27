@@ -3,17 +3,14 @@ package com.example.timesheet.ServiceImpl;
 import com.example.timesheet.Entity.Users;
 import com.example.timesheet.Respositories.UsersRespository;
 import com.example.timesheet.Service.UsersService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +47,8 @@ public class UsersServiceImpl implements UsersService {
         if (usersRespository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException("Email is already taken");
         }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         return usersRespository.save(user);
     }
 
@@ -69,7 +68,22 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users validateUser(String username, String password) {
         try {
-            return usersRespository.findByUsernameAndPassword(username, password);
+            Users user = usersRespository.findByUsername(username);
+
+            // Check if the user exists
+            if (user == null) {
+                return null;
+            }
+
+            // Use BCryptPasswordEncoder to check if the provided password matches the stored hashed password
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                // Passwords match
+                return user;
+            } else {
+                // Passwords do not match
+                return null;
+            }
         } catch (NoResultException ex) {
             // Handle the case when no user is found.
             return null;
@@ -84,48 +98,30 @@ public class UsersServiceImpl implements UsersService {
 
 
     private static final long TOKEN_EXPIRATION_TIME = 24 * 60 * 60 * 1000;
-   @Override
-    public void sendPasswordResetEmail(String email) {
 
+
+    @Override
+    public boolean sendPasswordResetEmail(String email) {
         Users user = usersRespository.findByEmail(email);
+
         if (user != null) {
-
-
             // Generate and send reset link with a unique token
             String resetToken = generateUniqueToken();
             user.setResetToken(resetToken);
             usersRespository.save(user);
             sendResetEmail(email, user.getResetToken());
-        }
-    }
-
-    @Override
-    public void resetPassword(String email, String newPassword) {
-        Users user = usersRespository.findByEmailAndResetToken(email, newPassword);
-        if (user != null && isTokenValid(user.getResetToken())){
-            // Check if the token is still valid
-            user.setPassword(newPassword);
-            user.setResetToken(null);
-            usersRespository.save(user);
-
+            return true; // Email sent successfully
         } else {
-            throw new RuntimeException("Invalid reset token or email");
+            // User not found
+            return false; // Email not sent
         }
     }
+
+
 
     private String generateUniqueToken() {
-        long expirationTime = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
-        return UUID.randomUUID().toString() + "|" + expirationTime;
-    }
-
-    private boolean isTokenValid(String token) {
-        // Extract expiration time from the token and check if it's still valid
-        String[] tokenParts = token.split("\\|");
-        if (tokenParts.length == 2) {
-            long expirationTime = Long.parseLong(tokenParts[1]);
-            return expirationTime >= System.currentTimeMillis();
-        }
-        return false;
+        //long expirationTime = System.currentTimeMillis() + TOKEN_EXPIRATION_TIME;
+        return UUID.randomUUID().toString() ;//+ "|" + expirationTime;
     }
 
 
@@ -139,5 +135,29 @@ public class UsersServiceImpl implements UsersService {
         // Send the email
         javaMailSender.send(message);
     }
+
+
+
+    @Override
+    public boolean resetPassword(String resetToken, String email, String newPassword) {
+        // Find user by reset token and email
+        Users user = usersRespository.findByResetTokenAndEmail(resetToken, email);
+
+        // Check if user, reset token, and email are valid
+        if (user != null && user.getResetToken() != null &&
+                user.getResetToken().equals(resetToken) && user.getEmail().equals(email)) {
+            // Reset password if reset token and email are valid
+            String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
+            user.setPassword(encryptedPassword);
+            user.setResetToken(null);
+            usersRespository.save(user);
+
+            return true; // Password reset successfully
+        } else {
+            return false; // Invalid reset token, email, or user not found
+        }
+    }
+
+
 
 }

@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTimeentries,Integer> {
@@ -41,22 +43,43 @@ public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTi
 
 
 
-
-    @Query("SELECT e FROM EmployeeTimeentries e " +
+    /*@Query("SELECT CASE WHEN e.status IN ('Approved', 'Submitted') THEN 'Status: ' || e.status " +
+            "                WHEN e.status = 'Rejected' AND e.status IS NOT NULL THEN 'Status: Rejected' " +
+            "                ELSE '' END AS statusMessage " +
+            "FROM EmployeeTimeentries e " +
             "WHERE e.projectEmployee = :projectEmployee " +
             "AND e.user = :user " +
-            "AND e.date BETWEEN :startDate AND :endDate")
-    List<EmployeeTimeentries> findCustomDateByProjectEmployeeAndUserAndDateRange(
+            "AND e.date BETWEEN :startDate AND :endDate " +
+            "AND (:status IS NULL OR e.status = :status)")
+    List<String> findCustomDateByProjectEmployeeAndUserAndDateRange(
             @Param("projectEmployee") ProjectEmployee projectEmployee,
             @Param("user") Users user,
             @Param("startDate") Date startDate,
-            @Param("endDate") Date endDate
-    );
+
+            @Param("endDate")  Date endDate,
+            @Param("status") String status
+
+
+    );*/
+
 
     @Query("SELECT e FROM EmployeeTimeentries  e WHERE e.user =:userId AND e.status = 'Submitted'")
     List<EmployeeTimeentries> findByUserAndSubmit(
             @Param("userId") Users userId
     );
+
+
+
+
+    @Query("SELECT e.status AS statusMessage, e FROM EmployeeTimeentries e " +
+            "WHERE e.projectEmployee = :projectEmployee " +
+            "AND e.user = :user " +
+            "AND e.date BETWEEN :startDate AND :endDate")
+    List<Object[]> getStatusMessageAndTimeEntries(
+            @Param("projectEmployee") ProjectEmployee projectEmployee,
+            @Param("user") Users user,
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate);
 
 
 

@@ -147,4 +147,6 @@ public class Users {
     public void setResetToken(String resetToken) {
         this.resetToken = resetToken;
     }
+
+
 }

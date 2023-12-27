@@ -4,12 +4,16 @@ import com.example.timesheet.Entity.*;
 import com.example.timesheet.Respositories.*;
 import com.example.timesheet.Service.DaywiseTimesheetService;
 import com.example.timesheet.Service.EmployeeTimeentriesService;
+import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -420,14 +424,40 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
 
 
 
-    @Override
-    public List<EmployeeTimeentries> findCustomDateByProjectEmployeeAndUserAndDateRange(
-            ProjectEmployee projectEmployee, Users user, Date startDate, Date endDate
-    ) {
-        return employeeTimeentriesRespository.findCustomDateByProjectEmployeeAndUserAndDateRange(
-                projectEmployee, user, startDate, endDate
-        );
-    }
+
+    /*@Override
+    public List<String> findCustomDateByProjectEmployeeAndUserAndDateRange(
+            ProjectEmployee projectEmployee,
+            Users user,
+           String startDate,
+            String endDate,
+            String status
+    )  {
+
+
+
+
+
+        {
+            try {
+                // Convert String to Date
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDateAsDate = sdf.parse(startDate);
+                Date endDateAsDate = sdf.parse(endDate);
+
+
+
+                return employeeTimeentriesRespository.findCustomDateByProjectEmployeeAndUserAndDateRange(
+                        projectEmployee, user, startDateAsDate, endDateAsDate, status
+                );
+            } catch (ParseException e) {
+                // Handle parsing exception
+                e.printStackTrace();
+                // You may choose to log the error, throw a custom exception, or handle it in another way
+                return Collections.emptyList(); // Or handle it in an appropriate way for your application
+            }
+        }
+    }*/
 
     @Override
     public void approveTimesheetInRange(Integer timesheetId) {
@@ -504,6 +534,25 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
 
         return employeeTimeentriesRespository.findByUserAndSubmit(userId);
     }
+
+
+
+    @Override
+    public List<Object[]> getStatusMessageAndTimeEntries(
+            ProjectEmployee projectEmployee,
+            Users user,
+            Date startDate,
+            Date endDate) {
+
+
+
+            return employeeTimeentriesRespository.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);// or handle the case when the status is neither "Submitted", "Approved", "Rejected", nor null
+
+
+
+       //return employeeTimeentriesRespository.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);
+    }
+
 
 
 

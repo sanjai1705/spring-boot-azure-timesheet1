@@ -16,9 +16,12 @@ public interface UsersService {
 
     List<Users> getUsersByRoleId(Integer roleId);
 
-    void sendPasswordResetEmail(String email);
 
-    void resetPassword(String email, String newPassword);
+    boolean sendPasswordResetEmail(String email);
+
+
+    boolean resetPassword(String resetToken, String email, String newPassword);
+
 
 
 }

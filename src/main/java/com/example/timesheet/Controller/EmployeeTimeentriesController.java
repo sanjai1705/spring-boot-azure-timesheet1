@@ -8,6 +8,7 @@ import com.example.timesheet.Respositories.DaywiseTimesheetRespository;
 import com.example.timesheet.Respositories.EmployeeTimeentriesRespository;
 import com.example.timesheet.Service.DaywiseTimesheetService;
 import com.example.timesheet.Service.EmployeeTimeentriesService;
+import com.example.timesheet.Service.ProjectEmployeeService;
 import com.example.timesheet.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,9 +16,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin(origins="https://timesheet-react.azurewebsites.net")
 @RestController
 @RequestMapping("/Timesheet")
@@ -38,6 +46,9 @@ public class EmployeeTimeentriesController {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    ProjectEmployeeService projectEmployeeService;
 
 
     @GetMapping("/EmployeeTimeentries")
@@ -72,13 +83,13 @@ public class EmployeeTimeentriesController {
 
 
     }*/
-
-    @GetMapping("/customdate")
-    public List<EmployeeTimeentries> findCustomDate(
+    /*@GetMapping("/customdate")
+    public List<String> findCustomDate(
             @RequestParam("projectEmployeeId") Integer projectEmployeeId,
             @RequestParam("userId") Integer userId,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date endDate
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String  startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) String endDate,
+            @RequestParam(value = "status", required = false) String status
     ) {
         ProjectEmployee projectEmployee = new ProjectEmployee();
         projectEmployee.setEmpID(projectEmployeeId);
@@ -86,10 +97,28 @@ public class EmployeeTimeentriesController {
         Users user = new Users();
         user.setUserId(userId);
 
+
+
+
+
+
+       System.out.println(formattedStartDate);
+        System.out.println(formattedEndDate);
+
+
+        System.out.println("hello");
+        System.out.println(userId);
+        System.out.println(status);
+        System.out.println(projectEmployeeId);
+
         return employeeTimeentriesService.findCustomDateByProjectEmployeeAndUserAndDateRange(
-                projectEmployee, user, startDate, endDate
+                projectEmployee, user,startDate, endDate,status
         );
-    }
+    }*/
+
+
+
+
 
 
     @PostMapping("/EmployeeTimeentries/EmployeeUserProjectCreate")
@@ -264,5 +293,20 @@ public class EmployeeTimeentriesController {
     public List<EmployeeTimeentries> getDaywiseTimesheetByUser(@PathVariable Users userId) {
         return employeeTimeentriesService.findByUserIdAndStatusIsSubmitted(userId);
     }
+
+
+    @GetMapping("/EmployeeTimeentries/status-message")
+    public List<Object[]> getStatusMessageAndTimeEntries(
+            @RequestParam ProjectEmployee projectEmployee,
+            @RequestParam Users user,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date endDate
+
+    ) {
+        return employeeTimeentriesService.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);
+    }
+
+
+
 
 }

@@ -25,4 +25,10 @@ public interface UsersRespository extends JpaRepository<Users,Integer> {
     Users findByEmailAndResetToken(String email, String newpassword);
 
 
+    Users findByUsername(String username);
+
+
+
+
+    Users findByResetTokenAndEmail(String resetToken, String email);
 }
