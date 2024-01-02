@@ -1,5 +1,6 @@
 package com.example.timesheet.Respositories;
 
+import com.example.timesheet.Entity.ClientTable;
 import com.example.timesheet.Entity.Project;
 import com.example.timesheet.Entity.ProjectEmployee;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,10 @@ public interface ProjectRespository extends JpaRepository<Project,Integer> {
     //List<Project> findByapplicable(Boolean applicable);
 
     List<Project> findByapplicable(boolean applicable);
+
+
+    List<Project> findByClient(ClientTable client);
+
 
 
 }

@@ -3,6 +3,7 @@ package com.example.timesheet.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ProjectEmployee")
@@ -94,4 +95,6 @@ public class ProjectEmployee {
     public void setRestriction(String restriction) {
         this.restriction = restriction;
     }
+
+
 }

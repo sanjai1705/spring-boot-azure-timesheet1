@@ -49,6 +49,9 @@ public class Users {
     @Column(name = "Reset_Token")
     private String resetToken;
 
+    @Column(name = "reset_token_expiry")
+    private Date resetTokenExpiry;
+
     public Users() {
     }
 
@@ -148,5 +151,11 @@ public class Users {
         this.resetToken = resetToken;
     }
 
+    public Date getResetTokenExpiry() {
+        return resetTokenExpiry;
+    }
 
+    public void setResetTokenExpiry(Date resetTokenExpiry) {
+        this.resetTokenExpiry = resetTokenExpiry;
+    }
 }

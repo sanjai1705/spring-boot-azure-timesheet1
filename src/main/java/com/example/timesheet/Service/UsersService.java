@@ -1,6 +1,7 @@
 package com.example.timesheet.Service;
 
 import com.example.timesheet.Entity.Users;
+import com.example.timesheet.ServiceImpl.UsersServiceImpl;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface UsersService {
 
 
     boolean sendPasswordResetEmail(String email);
+
+
 
 
     boolean resetPassword(String resetToken, String email, String newPassword);

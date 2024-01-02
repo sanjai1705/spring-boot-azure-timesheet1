@@ -21,10 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins="https://timesheet-react.azurewebsites.net")
 @RestController
@@ -305,6 +303,7 @@ public class EmployeeTimeentriesController {
     ) {
         return employeeTimeentriesService.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);
     }
+
 
 
 

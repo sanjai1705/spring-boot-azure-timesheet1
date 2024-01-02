@@ -4,16 +4,12 @@ import com.example.timesheet.Entity.*;
 import com.example.timesheet.Respositories.*;
 import com.example.timesheet.Service.DaywiseTimesheetService;
 import com.example.timesheet.Service.EmployeeTimeentriesService;
-import jdk.jshell.Snippet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +27,8 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
    @Autowired
     YearlytableRespository yearlytableRespository;
 
+    @Autowired
+    private ProjectEmployeeRespository projectEmployeeRepository;
 
     @Override
     public List<EmployeeTimeentries> getAllEmployeeTimeentries() {
@@ -546,12 +544,16 @@ public class EmployeeTimeentriesServiceImpl implements EmployeeTimeentriesServic
 
 
 
-            return employeeTimeentriesRespository.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);// or handle the case when the status is neither "Submitted", "Approved", "Rejected", nor null
 
+            return employeeTimeentriesRespository.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);// or handle the case when the status is neither "Submitted", "Approved", "Rejected", nor null
 
 
        //return employeeTimeentriesRespository.getStatusMessageAndTimeEntries(projectEmployee, user, startDate, endDate);
     }
+
+
+
+
 
 
 

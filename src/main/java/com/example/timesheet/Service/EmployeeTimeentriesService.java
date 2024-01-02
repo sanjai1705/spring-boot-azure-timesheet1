@@ -1,10 +1,7 @@
 package com.example.timesheet.Service;
 
 //import com.example.timesheet.Entity.EmployeeManager;
-import com.example.timesheet.Entity.DaywiseTimesheet;
-import com.example.timesheet.Entity.EmployeeTimeentries;
-import com.example.timesheet.Entity.ProjectEmployee;
-import com.example.timesheet.Entity.Users;
+import com.example.timesheet.Entity.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -81,6 +78,9 @@ public interface EmployeeTimeentriesService {
             Users user,
             Date startDate,
             Date endDate);
+
+
+
 }
 
 

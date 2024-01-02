@@ -1,5 +1,6 @@
 package com.example.timesheet.ServiceImpl;
 
+import com.example.timesheet.Entity.ClientTable;
 import com.example.timesheet.Entity.Project;
 import com.example.timesheet.Respositories.ProjectRespository;
 import com.example.timesheet.Service.ProjectService;
@@ -50,4 +51,15 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Integer projectId) {
         projectRespository.deleteById(projectId);
     }
+
+    @Override
+    public List<Project> getProjectsByClient(ClientTable client) {
+        return projectRespository.findByClient(client);
+    }
+
+
+
+
+
 }
+

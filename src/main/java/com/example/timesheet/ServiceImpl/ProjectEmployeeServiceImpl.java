@@ -1,12 +1,18 @@
 package com.example.timesheet.ServiceImpl;
 
+import com.example.timesheet.Entity.ClientTable;
 import com.example.timesheet.Entity.EmployeeTimeentries;
+import com.example.timesheet.Entity.Project;
 import com.example.timesheet.Entity.ProjectEmployee;
+import com.example.timesheet.Respositories.EmployeeClientdetailsRepository;
+import com.example.timesheet.Respositories.EmployeeTimeentriesRespository;
 import com.example.timesheet.Respositories.ProjectEmployeeRespository;
 import com.example.timesheet.Service.ProjectEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +20,18 @@ import java.util.Optional;
 public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
     @Autowired
     ProjectEmployeeRespository projectEmployeeRespository;
+
+    @Autowired
+    private ProjectEmployeeRespository projectRepository;
+
+    @Autowired
+    private ProjectEmployeeRespository projectEmployeeRepository;
+
+    @Autowired
+    private EmployeeTimeentriesRespository employeeTimeentriesRepository;
+
+    @Autowired
+    private EmployeeClientdetailsRepository clientRepository;
 
     @Override
     public List<ProjectEmployee> getAllProjectEmployees() {
@@ -55,4 +73,12 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
     public void deleteProjectEmployee(Integer id) {
         projectEmployeeRespository.deleteById(id);
     }
+
+
+
+
+
+
+
 }
+

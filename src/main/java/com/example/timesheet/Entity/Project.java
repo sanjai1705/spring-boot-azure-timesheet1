@@ -3,6 +3,8 @@ package com.example.timesheet.Entity;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
+
 @Entity
 @Table(name = "Project")
 public class Project {
@@ -13,9 +15,6 @@ public class Project {
 
     @Column(name = "Project_Name")
     private String projectName;
-
-    @Column(name = "Client_Name")
-    private String clientName;
 
     @Column(name = "Billing_Type")
     private String billingType;
@@ -64,14 +63,6 @@ public class Project {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
     }
 
     public String getBillingType() {

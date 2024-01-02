@@ -1,5 +1,6 @@
 package com.example.timesheet.Service;
 
+import com.example.timesheet.Entity.ClientTable;
 import com.example.timesheet.Entity.Project;
 
 import java.util.List;
@@ -19,4 +20,10 @@ public interface ProjectService {
     List<Project> applicableDays(boolean applicable);
 
     void deleteProject(Integer projectId);
+
+    List<Project> getProjectsByClient(ClientTable client);
+
+
+
+
 }

@@ -83,4 +83,13 @@ public interface EmployeeTimeentriesRespository extends JpaRepository<EmployeeTi
 
 
 
+
+
+
+
+
+
+    List<EmployeeTimeentries> findByUser_UserIdAndDateBetween(Users user, Date startDate, Date endDate);
+
+    List<EmployeeTimeentries> findByProjectEmployeeEmpIDAndDateBetween(Integer empId, Date startDate, Date endDate);
 }

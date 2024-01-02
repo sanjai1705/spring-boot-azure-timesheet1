@@ -11,6 +11,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,6 +109,9 @@ public class UsersServiceImpl implements UsersService {
             // Generate and send reset link with a unique token
             String resetToken = generateUniqueToken();
             user.setResetToken(resetToken);
+
+            Date resetTokenExpiry = new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000));
+            user.setResetTokenExpiry(resetTokenExpiry);
             usersRespository.save(user);
             sendResetEmail(email, user.getResetToken());
             return true; // Email sent successfully
@@ -145,11 +149,13 @@ public class UsersServiceImpl implements UsersService {
 
         // Check if user, reset token, and email are valid
         if (user != null && user.getResetToken() != null &&
-                user.getResetToken().equals(resetToken) && user.getEmail().equals(email)) {
+                user.getResetToken().equals(resetToken) && user.getEmail().equals(email)&&
+                user.getResetTokenExpiry() != null && user.getResetTokenExpiry().after(new Date())) {
             // Reset password if reset token and email are valid
             String encryptedPassword = new BCryptPasswordEncoder().encode(newPassword);
             user.setPassword(encryptedPassword);
             user.setResetToken(null);
+            user.setResetTokenExpiry(null);
             usersRespository.save(user);
 
             return true; // Password reset successfully
@@ -157,6 +163,7 @@ public class UsersServiceImpl implements UsersService {
             return false; // Invalid reset token, email, or user not found
         }
     }
+
 
 
 
