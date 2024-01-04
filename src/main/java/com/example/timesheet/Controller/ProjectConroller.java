@@ -75,5 +75,36 @@ public class ProjectConroller {
     }
 
 
+    @GetMapping("/client/{clientId}/project-employee-timeentries")
+    public ResponseEntity<Object> getProjectEmployeeTimeentriesForClient(
+            @PathVariable Integer clientId,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
 
+        try {
+            List<Project> projects = projectService.getProjectsByClientId(clientId);
+            List<ProjectEmployee> projectEmployees = new ArrayList<>();
+            List<EmployeeTimeentries> employeeTimeentries = new ArrayList<>();
+
+            for (Project project : projects) {
+                List<ProjectEmployee> projectEmployeeList = projectService.getProjectEmployeesByProjectId(project.getProjectId());
+                projectEmployees.addAll(projectEmployeeList);
+
+                for (ProjectEmployee projectEmployee : projectEmployeeList) {
+                    List<EmployeeTimeentries> timeEntries = projectService.getEmployeeTimeentriesByEmpIdAndDateRange(projectEmployee.getEmpID(), startDate, endDate);
+                    employeeTimeentries.addAll(timeEntries);
+                }
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("projects", projects);
+            result.put("projectEmployees", projectEmployees);
+            result.put("employeeTimeentries", employeeTimeentries);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error fetching data: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

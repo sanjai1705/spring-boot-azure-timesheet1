@@ -20,5 +20,5 @@ public interface ProjectRespository extends JpaRepository<Project,Integer> {
     List<Project> findByClient(ClientTable client);
 
 
-
+    List<Project> findByClientClientId(Integer clientId);
 }
